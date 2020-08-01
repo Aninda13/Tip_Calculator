@@ -22,8 +22,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var tipLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var TipAmountSegment: UISegmentedControl!
+    @IBOutlet weak var manual: UISwitch!
+    @IBOutlet weak var tipField: UITextField!
     
-//    override func viewWillAppear(_ animated: Bool) {
+    //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
 //        print("view Will Appear")
 //    }
@@ -42,13 +44,13 @@ class ViewController: UIViewController {
 //    }
     
     @IBAction func onTap(_ sender: Any) {
-        print("Hello")
-        
         view.endEditing(true)
     }
     
     
     @IBAction func calculateTip(_ sender: Any) {
+       
+        if(!manual.isOn){
         // Get bill
        // let convertedBill = Double(billField.text!)
         let bill = Double(billField.text!) ?? 0
@@ -62,7 +64,21 @@ class ViewController: UIViewController {
         // update
        tipLabel.text = String(format: "$%.2f", tip)
        totalLabel.text = String(format: "$%.2f", totalBill)
-        
+        }else if( billField.text != ""){
+            let bill = Double(billField.text!) ?? 0
+            var tipVal = Double(tipField.text!) ?? 0
+            if(tipVal < 1){
+                tipVal = 0
+            }
+         
+         let totalBill = bill + tipVal
+             
+             // update
+            tipLabel.text = String(format: "$%.2f", tipVal)
+            totalLabel.text = String(format: "$%.2f", totalBill)
+        }else{
+            totalLabel.text = String(format: "$%.2f", 0)
+        }
     }
 }
 
